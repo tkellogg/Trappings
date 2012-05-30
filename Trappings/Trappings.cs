@@ -5,11 +5,11 @@ namespace Trappings
 {
     public sealed class Trappings : IDisposable
     {
-        private readonly IFixtureLoader fixtureLoader;
-
         public Trappings(IFixtureLoader fixtureLoader, IDatabaseProvider db)
         {
-            this.fixtureLoader = fixtureLoader;
+            var fixtures = fixtureLoader.GetFixtures();
+            foreach(var fixture in fixtures)
+                db.LoadFixtures(fixture);
         }
 
         public static Trappings Create()

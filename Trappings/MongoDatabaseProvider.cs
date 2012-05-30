@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Trappings
@@ -10,6 +11,7 @@ namespace Trappings
             var collection = db.GetCollection<dynamic>(container.Name);
             foreach (var fixture in container.Fixtures)
             {
+                fixture.Value.Id = BsonObjectId.GenerateNewId();
                 collection.Save(fixture.Value);
             }
         }
