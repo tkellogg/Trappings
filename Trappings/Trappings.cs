@@ -6,7 +6,7 @@ namespace Trappings
     {
         private readonly IFixtureLoader fixtureLoader;
 
-        internal Trappings(IFixtureLoader fixtureLoader)
+        internal Trappings(IFixtureLoader fixtureLoader, IDatabaseProvider db)
         {
             this.fixtureLoader = fixtureLoader;
         }

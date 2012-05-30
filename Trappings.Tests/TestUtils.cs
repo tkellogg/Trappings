@@ -9,5 +9,11 @@ namespace Trappings.Tests
             var db = MongoDatabase.Create("mongodb://localhost/test");
             return db.GetCollection<T>(name);
         }
+
+        public static MongoCollection GetCollection(string name)
+        {
+            var db = MongoDatabase.Create("mongodb://localhost/test");
+            return db.GetCollection(name);
+        }
     }
 }

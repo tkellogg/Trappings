@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\mongocsharpdriver.1.4.2\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\mongocsharpdriver.1.4.2\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -47,9 +53,11 @@
     <Compile Include="FileSystemProvider.cs" />
     <Compile Include="Fixture.cs" />
     <Compile Include="FixtureContainer.cs" />
+    <Compile Include="IDatabaseProvider.cs" />
     <Compile Include="IFileSystemProvider.cs" />
     <Compile Include="IFixtureLoader.cs" />
     <Compile Include="JsonFixtureLoader.cs" />
+    <Compile Include="MongoDatabaseProvider.cs" />
     <Compile Include="Trappings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
