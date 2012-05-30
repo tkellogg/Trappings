@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Codeplex.Data;
 
 namespace Trappings
 {
@@ -27,8 +28,18 @@ namespace Trappings
         {
             return new FixtureContainer
                        {
-                           Name = NamePattern.Match(name).Groups[1].Value
+                           Name = NamePattern.Match(name).Groups[1].Value,
+                           Fixtures = ReadFixtures(fileSystem.ReadFile(name))
                        };
+        }
+
+        private IEnumerable<Fixture> ReadFixtures(string fileContents)
+        {
+            dynamic fixtures = DynamicJson.Parse(fileContents);
+            foreach (var pair in fixtures)
+            {
+                yield return new Fixture {Name = pair.Key, Value = pair.Value};
+            }
         }
     }
 }

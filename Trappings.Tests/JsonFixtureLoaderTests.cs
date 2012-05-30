@@ -38,5 +38,28 @@ namespace Trappings.Tests
             containers.Length.ShouldEqual(1);
             containers[0].Name.ShouldEqual("cars");
         }
+
+        [Fact]
+        public void It_reads_each_item_in_the_file_into_a_fixture()
+        {
+            var document = @"
+            {
+                ""item1"": {
+                    ""Make"": ""Chevy"",
+                    ""Model"": ""Cruze""
+                }
+            }
+            ";
+            var fileSystem = Mock.Of<IFileSystemProvider>(x => x.GetFiles() == new[]{"cars.json"}
+                && x.ReadFile("cars.json") == document);
+            var loader = new JsonFixtureLoader(fileSystem);
+
+            var containers = loader.GetFixtures().ToArray();
+            containers[0].Fixtures.Count().ShouldEqual(1);
+            containers[0].Fixtures.First().Name.ShouldEqual("item1");
+            ((string)containers[0].Fixtures.First().Value.Make).ShouldEqual("Chevy");
+            ((string)containers[0].Fixtures.First().Value.Model).ShouldEqual("Cruze");
+        }
+
     }
 }
