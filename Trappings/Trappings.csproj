@@ -42,6 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fixture.cs" />
+    <Compile Include="FixtureContainer.cs" />
+    <Compile Include="IFileSystemProvider.cs" />
+    <Compile Include="IFixtureLoader.cs" />
+    <Compile Include="JsonFixtureLoader.cs" />
     <Compile Include="Trappings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
