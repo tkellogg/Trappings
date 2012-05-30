@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Moq;
 using Should;
 using Xunit;
 
@@ -17,7 +18,7 @@ namespace Trappings.Tests
             File.WriteAllText(Path.Combine(directory, "test.yml"), "this: is a test");
             File.WriteAllText(Path.Combine(directory, "test.json"), @"{""this"": ""is a test""}");
 
-            var provider = new FileSystemProvider(directory);
+            var provider = new FileSystemProvider(Mock.Of<IConfiguration>(x => x.Directory == directory));
             IList<string> names = provider.GetFiles().OrderBy(x => x).ToList();
             names.Count.ShouldEqual(3);
             var expected = new[] {"test.json", "test.txt", "test.yml"}.Select(x => Path.Combine(directory, x)).ToArray();

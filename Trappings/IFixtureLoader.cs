@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Trappings
 {
-    internal interface IFixtureLoader
+    public interface IFixtureLoader
     {
         IEnumerable<FixtureContainer> GetFixtures();
     }

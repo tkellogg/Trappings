@@ -10,7 +10,7 @@ namespace Trappings.Tests
         [Fact]
         public void A_context_is_a_Trappings_object_in_a_using_statement()
         {
-            using (new Trappings())
+            using (Trappings.Create())
             {
                 // The context
             }
@@ -19,7 +19,7 @@ namespace Trappings.Tests
         [Fact]
         public void Objects_are_accessible_within_the_context()
         {
-            using (new Trappings())
+            using (Trappings.Create())
             {
                 var collection = TestUtils.GetCollection<Car>("cars");
                 var cruze = (from car in collection.AsQueryable()

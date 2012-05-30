@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dynamo.Ioc">
+      <HintPath>..\packages\Dynamo.Ioc.1.0\lib\Dynamo.Ioc.dll</HintPath>
+    </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\packages\mongocsharpdriver.1.4.2\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
@@ -49,10 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration.cs" />
     <Compile Include="DynamicJson.cs" />
     <Compile Include="FileSystemProvider.cs" />
     <Compile Include="Fixture.cs" />
     <Compile Include="FixtureContainer.cs" />
+    <Compile Include="IConfiguration.cs" />
     <Compile Include="IDatabaseProvider.cs" />
     <Compile Include="IFileSystemProvider.cs" />
     <Compile Include="IFixtureLoader.cs" />

@@ -7,7 +7,7 @@ using Codeplex.Data;
 
 namespace Trappings
 {
-    internal class JsonFixtureLoader : IFixtureLoader
+    public class JsonFixtureLoader : IFixtureLoader
     {
         private readonly IFileSystemProvider fileSystem;
         private static readonly Regex NamePattern = new Regex(@"(.*)\.json", RegexOptions.IgnoreCase);

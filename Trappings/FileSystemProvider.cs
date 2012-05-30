@@ -3,13 +3,13 @@ using System.IO;
 
 namespace Trappings
 {
-    internal class FileSystemProvider : IFileSystemProvider
+    public class FileSystemProvider : IFileSystemProvider
     {
         private readonly string directory;
 
-        public FileSystemProvider(string directory)
+        public FileSystemProvider(IConfiguration configuration)
         {
-            this.directory = directory;
+            directory = configuration.Directory;
         }
 
         public IList<string> GetFiles()

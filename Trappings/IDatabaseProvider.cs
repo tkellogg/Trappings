@@ -1,6 +1,6 @@
 namespace Trappings
 {
-    internal interface IDatabaseProvider
+    public interface IDatabaseProvider
     {
         void LoadFixtures(FixtureContainer container);
     }
