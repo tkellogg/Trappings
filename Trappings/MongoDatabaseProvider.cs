@@ -12,9 +12,7 @@ namespace Trappings
             var collection = db.GetCollection<Dictionary<string,object>>(container.Name);
             foreach (var fixture in container.Fixtures)
             {
-                Dictionary<string, object> converted = fixture.Value;
-                converted["Id"] = BsonObjectId.GenerateNewId();
-                collection.Save(converted);
+                collection.Save(fixture.Value);
             }
         }
     }

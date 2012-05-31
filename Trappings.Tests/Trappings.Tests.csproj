@@ -57,6 +57,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FixtureFinderTests.cs" />
     <Compile Include="FileSystemProviderTests.cs" />
     <Compile Include="ClrFixtureLoaderTests.cs" />
     <Compile Include="JsonFixtureLoaderTests.cs" />

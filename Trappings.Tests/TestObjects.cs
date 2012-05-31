@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MongoDB.Bson;
 
 namespace Trappings.Tests
@@ -7,5 +8,13 @@ namespace Trappings.Tests
         public ObjectId Id { get; set; }
         public string Make { get; set; }
         public string Model { get; set; }
+    }
+
+    class AcceptanceFixtures
+    {
+        static Dictionary<string, Car> cars = new Dictionary<string, Car>
+          {
+              {"cruze", new Car { Make = "Chevy", Model = "Cruze"}}
+          };
     }
 }

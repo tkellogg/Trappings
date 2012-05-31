@@ -7,16 +7,16 @@ namespace Trappings
 {
     public class ClrFixtureLoader : IFixtureLoader
     {
-        private readonly ITypeResolver typeResolver;
+        private readonly IFixtureFinder fixtureFinder;
 
-        public ClrFixtureLoader(ITypeResolver typeResolver)
+        public ClrFixtureLoader(IFixtureFinder fixtureFinder)
         {
-            this.typeResolver = typeResolver;
+            this.fixtureFinder = fixtureFinder;
         }
 
         public IEnumerable<FixtureContainer> GetFixtures()
         {
-            foreach (var type in typeResolver.GetTypes())
+            foreach (var type in fixtureFinder.GetTypes())
             {
                 foreach (var fieldInfo in type.GetFields(BindingFlags.Static| BindingFlags.Public | BindingFlags.NonPublic))
                 {

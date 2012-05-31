@@ -19,7 +19,7 @@ namespace Trappings.Tests
         [Fact]
         public void Objects_are_accessible_within_the_context()
         {
-            using (Trappings.Create())
+            using (Trappings.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
             {
                 var collection = TestUtils.GetCollection<Car>("cars");
                 var cruze = (from car in collection.AsQueryable()

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace Trappings
 {
-    public interface ITypeResolver
+    public interface IFixtureFinder
     {
         IEnumerable<Type> GetTypes();
+        IFixtureFinder Add(params Type[] types);
     }
 }

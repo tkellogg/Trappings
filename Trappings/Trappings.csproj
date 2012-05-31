@@ -58,11 +58,12 @@
     <Compile Include="FileSystemProvider.cs" />
     <Compile Include="Fixture.cs" />
     <Compile Include="FixtureContainer.cs" />
+    <Compile Include="FixtureFinder.cs" />
     <Compile Include="IConfiguration.cs" />
     <Compile Include="IDatabaseProvider.cs" />
     <Compile Include="IFileSystemProvider.cs" />
     <Compile Include="IFixtureLoader.cs" />
-    <Compile Include="ITypeResolver.cs" />
+    <Compile Include="IFixtureFinder.cs" />
     <Compile Include="JsonFixtureLoader.cs" />
     <Compile Include="MongoDatabaseProvider.cs" />
     <Compile Include="Trappings.cs" />
