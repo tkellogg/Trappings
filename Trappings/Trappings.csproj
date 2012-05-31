@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClrFixtureLoader.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DynamicJson.cs" />
     <Compile Include="FileSystemProvider.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="IDatabaseProvider.cs" />
     <Compile Include="IFileSystemProvider.cs" />
     <Compile Include="IFixtureLoader.cs" />
+    <Compile Include="ITypeResolver.cs" />
     <Compile Include="JsonFixtureLoader.cs" />
     <Compile Include="MongoDatabaseProvider.cs" />
     <Compile Include="Trappings.cs" />

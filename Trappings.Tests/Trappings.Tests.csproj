@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystemProviderTests.cs" />
+    <Compile Include="ClrFixtureLoaderTests.cs" />
     <Compile Include="JsonFixtureLoaderTests.cs" />
     <Compile Include="MongoDatabaseProviderTests.cs" />
     <Compile Include="TestObjects.cs" />
