@@ -6,7 +6,7 @@ namespace Trappings
     {
         private readonly IFixtureFinder fixtureFinder;
 
-        public Trappings(IFixtureLoader fixtureLoader, IDatabaseProvider db, IFixtureFinder fixtureFinder)
+        private Trappings(IFixtureLoader fixtureLoader, IDatabaseProvider db, IFixtureFinder fixtureFinder)
         {
             this.fixtureFinder = fixtureFinder;
             var fixtures = fixtureLoader.GetFixtures();

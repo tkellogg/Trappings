@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Trappings
 {
-    public class ClrFixtureLoader : IFixtureLoader
+    internal class ClrFixtureLoader : IFixtureLoader
     {
         private readonly IFixtureFinder fixtureFinder;
 

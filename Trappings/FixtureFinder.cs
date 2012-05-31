@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Trappings
 {
-    public class FixtureFinder : IFixtureFinder
+    internal class FixtureFinder : IFixtureFinder
     {
         private readonly List<Type> types = new List<Type>(); 
 

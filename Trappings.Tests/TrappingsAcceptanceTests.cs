@@ -28,5 +28,17 @@ namespace Trappings.Tests
                 cruze.ShouldNotBeNull();
             }
         }
+
+        [Fact]
+        public void Dispose_removes_inserted_objects()
+        {
+            var collection = TestUtils.GetCollection<Car>("cars");
+            var originalNumberOfCars = collection.FindAll().Count();
+            using (Trappings.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
+            {
+                collection.FindAll().Count().ShouldEqual(originalNumberOfCars + 1);
+            }
+            collection.FindAll().Count().ShouldEqual(originalNumberOfCars);
+        }
     }
 }

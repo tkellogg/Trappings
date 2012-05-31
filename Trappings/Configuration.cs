@@ -1,6 +1,6 @@
 namespace Trappings
 {
-    public class Configuration : IConfiguration
+    internal class Configuration : IConfiguration
     {
         public string Directory
         {

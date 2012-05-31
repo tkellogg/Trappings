@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace Trappings
 {
-    public class MongoDatabaseProvider : IDatabaseProvider
+    internal class MongoDatabaseProvider : IDatabaseProvider
     {
         public void LoadFixtures(FixtureContainer container)
         {
