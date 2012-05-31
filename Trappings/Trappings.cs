@@ -4,11 +4,11 @@ namespace Trappings
 {
     public sealed class Trappings : IDisposable
     {
-        private readonly IFixtureFinder fixtureFinder;
+        private readonly IDatabaseProvider db;
 
-        private Trappings(IFixtureLoader fixtureLoader, IDatabaseProvider db, IFixtureFinder fixtureFinder)
+        private Trappings(IFixtureLoader fixtureLoader, IDatabaseProvider db)
         {
-            this.fixtureFinder = fixtureFinder;
+            this.db = db;
             var fixtures = fixtureLoader.GetFixtures();
             foreach(var fixture in fixtures)
                 db.LoadFixtures(fixture);
@@ -16,6 +16,7 @@ namespace Trappings
 
         public void Dispose()
         {
+            db.Clear();
         }
 
         public static Trappings Create(Action<IFixtureFinder> configure)
@@ -23,8 +24,9 @@ namespace Trappings
             var fixtureFinder = new FixtureFinder();
             configure(fixtureFinder);
             var fixtureLoader = new ClrFixtureLoader(fixtureFinder);
-            var dbProvider = new MongoDatabaseProvider();
-            return new Trappings(fixtureLoader, dbProvider, fixtureFinder);
+            var configuration = new Configuration();
+            var dbProvider = new MongoDatabaseProvider(configuration);
+            return new Trappings(fixtureLoader, dbProvider);
         }
 
         public static Trappings Create()
