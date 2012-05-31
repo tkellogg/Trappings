@@ -1,5 +1,4 @@
 ﻿using System;
-using Dynamo.Ioc;
 
 namespace Trappings
 {
@@ -13,26 +12,6 @@ namespace Trappings
             var fixtures = fixtureLoader.GetFixtures();
             foreach(var fixture in fixtures)
                 db.LoadFixtures(fixture);
-        }
-
-        private static Container _container;
-        private static Container Container
-        {
-            get
-            {
-                if (_container == null)
-                {
-                    _container = new Container();
-                    _container.Register<IConfiguration, Configuration>();
-                    _container.Register<IFixtureLoader, ClrFixtureLoader>();
-                    _container.Register<IFixtureFinder, FixtureFinder>();
-                    _container.Register<IDatabaseProvider, MongoDatabaseProvider>();
-                    _container.Register<IFileSystemProvider, FileSystemProvider>();
-                    _container.Register<Trappings, Trappings>();
-                    _container.Compile();
-                }
-                return _container;
-            }
         }
 
         public void Dispose()
