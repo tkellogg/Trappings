@@ -28,6 +28,11 @@ namespace Trappings.Tests
             private Dictionary<string, Car> cars = new Dictionary<string, Car> {};
             private Dictionary<string, Car> oldCars = new Dictionary<string, Car> {};
         }
+
+        class WithEnumerable
+        {
+            private static Car[] cars = new[] {new Car {Make = "Chevy", Model = "Cruze"}};
+        }
         #endregion
 
         [Fact]
@@ -65,6 +70,21 @@ namespace Trappings.Tests
             var resolver = Mock.Of<IFixtureFinder>(x => x.GetTypes() == new[] {typeof (WithoutStaticFields)});
             var loader = new ClrFixtureLoader(resolver);
             loader.GetFixtures().Any().ShouldBeFalse();
+        }
+
+        [Fact]
+        public void It_will_also_get_IEnumerble_fields()
+        {
+            var resolver = Mock.Of<IFixtureFinder>(x => x.GetTypes() == new[] {typeof (WithEnumerable)});
+            var loader = new ClrFixtureLoader(resolver);
+            var containers = loader.GetFixtures().ToArray();
+
+            containers.Length.ShouldEqual(1);
+            containers.Any(x => x.Name == "cars").ShouldBeTrue();
+            containers[0].Fixtures.First().Name.ShouldBeNull();
+            Car car = containers[0].Fixtures.First().Value;
+            car.Make.ShouldEqual("Chevy");
+            car.Model.ShouldEqual("Cruze");
         }
     }
 }

@@ -28,6 +28,14 @@ namespace Trappings
 
                         yield return CreateFixtureContainerFromDictionary(fieldInfo.Name, dictionary);
                     }
+                    else if (typeof(IEnumerable).IsAssignableFrom(fieldInfo.FieldType))
+                    {
+                        var list = fieldInfo.GetValue(null) as IEnumerable;
+                        if (list == null)
+                            continue;
+
+                        yield return CreateFixtureContainerFromList(fieldInfo.Name, list);
+                    }
                 }
             }
         }
@@ -41,6 +49,16 @@ namespace Trappings
                                         .Select(x => CreateFixture(x, dictionary[x]))
                                 };
 
+            return container;
+        }
+
+        private FixtureContainer CreateFixtureContainerFromList(string name, IEnumerable list)
+        {
+            var container = new FixtureContainer
+                                {
+                                    Name = name,
+                                    Fixtures = list.Cast<object>().Select(x => CreateFixture(null, x))
+                                };
             return container;
         }
 
