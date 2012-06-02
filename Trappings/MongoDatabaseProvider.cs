@@ -26,10 +26,15 @@ namespace Trappings
             foreach (var fixture in container.Fixtures)
             {
                 collection.Save(fixture.Value);
-                var id = GetId(fixture.Value);
-                var query = Query.EQ("_id", BsonValue.Create(id));
-                AddCleanupQuery(container.Name, query);
+                AddItemForCleanup(container.Name, fixture.Value);
             }
+        }
+
+        public void AddItemForCleanup(string collectionName, object item)
+        {
+            var id = GetId(item);
+            var query = Query.EQ("_id", BsonValue.Create(id));
+            AddCleanupQuery(collectionName, query);
         }
 
         private MongoCollection<Dictionary<string, object>> GetCollection(string name)

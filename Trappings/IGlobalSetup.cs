@@ -7,7 +7,7 @@ namespace Trappings
     public interface IGlobalSetup
     {
         /// <summary>
-        /// Run once, before any other FixtureManager code. This is a great place for Mongo class mappings
+        /// Run once, before any other FixtureSession code. This is a great place for Mongo class mappings
         /// to be setup.
         /// </summary>
         void SetupOnce();

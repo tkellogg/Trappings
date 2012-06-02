@@ -4,5 +4,6 @@ namespace Trappings
     {
         void LoadFixtures(FixtureContainer container);
         void Clear();
+        void AddItemForCleanup(string collectionName, object item);
     }
 }

@@ -61,7 +61,7 @@
     <Compile Include="IGlobalSetup.cs" />
     <Compile Include="MongoDatabaseProvider.cs" />
     <Compile Include="SetupClassScanner.cs" />
-    <Compile Include="FixtureManager.cs" />
+    <Compile Include="FixtureSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

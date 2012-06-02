@@ -2,13 +2,15 @@
 
 namespace Trappings
 {
-    public sealed class FixtureManager : IDisposable
+    public sealed class FixtureSession : IDisposable
     {
+        private readonly IFixtureLoader fixtureLoader;
         private readonly IDatabaseProvider db;
         private static bool _hasRunInitializers;
 
-        private FixtureManager(IFixtureLoader fixtureLoader, IDatabaseProvider db)
+        private FixtureSession(IFixtureLoader fixtureLoader, IDatabaseProvider db)
         {
+            this.fixtureLoader = fixtureLoader;
             this.db = db;
             var fixtures = fixtureLoader.GetFixtures();
             foreach(var fixture in fixtures)
@@ -20,7 +22,15 @@ namespace Trappings
             db.Clear();
         }
 
-        public static FixtureManager Create(Action<IFixtureFinder> configure)
+        /// <summary>
+        /// Add an object to the session that will be cleaned up at the end
+        /// </summary>
+        public void Track(object @object, string collectionName)
+        {
+            db.AddItemForCleanup(collectionName, @object);
+        }
+
+        public static FixtureSession Create(Action<IFixtureFinder> configure)
         {
             RunInitializersIfNeeded();
             var fixtureFinder = new FixtureFinder();
@@ -28,7 +38,7 @@ namespace Trappings
             var fixtureLoader = new ClrFixtureLoader(fixtureFinder);
             var configuration = new Configuration();
             var dbProvider = new MongoDatabaseProvider(configuration);
-            return new FixtureManager(fixtureLoader, dbProvider);
+            return new FixtureSession(fixtureLoader, dbProvider);
         }
 
         private static void RunInitializersIfNeeded()
@@ -39,27 +49,27 @@ namespace Trappings
             _hasRunInitializers = true;
         }
 
-        public static FixtureManager Create()
+        public static FixtureSession Create()
         {
             return Create(conf => { });
         }
 
-        public static FixtureManager UseFixture<T>()
+        public static FixtureSession UseFixture<T>()
         {
             return Create(conf => conf.Add(typeof (T)));
         }
 
-        public static FixtureManager UseFixtures<T1, T2>()
+        public static FixtureSession UseFixtures<T1, T2>()
         {
             return Create(conf => conf.Add(typeof (T1), typeof (T2)));
         }
 
-        public static FixtureManager UseFixtures<T1, T2, T3>()
+        public static FixtureSession UseFixtures<T1, T2, T3>()
         {
             return Create(conf => conf.Add(typeof (T1), typeof (T2), typeof (T3)));
         }
 
-        public static FixtureManager UseFixtures<T1, T2, T3, T4>()
+        public static FixtureSession UseFixtures<T1, T2, T3, T4>()
         {
             return Create(conf => conf.Add(typeof (T1), typeof (T2), typeof (T3), typeof (T4)));
         }

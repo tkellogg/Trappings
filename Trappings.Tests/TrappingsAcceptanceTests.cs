@@ -10,7 +10,7 @@ namespace Trappings.Tests
         [Fact]
         public void A_context_is_a_Trappings_object_in_a_using_statement()
         {
-            using (FixtureManager.Create())
+            using (FixtureSession.Create())
             {
                 // The context
             }
@@ -19,7 +19,7 @@ namespace Trappings.Tests
         [Fact]
         public void Objects_are_accessible_within_the_context()
         {
-            using (FixtureManager.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
+            using (FixtureSession.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
             {
                 var collection = TestUtils.GetCollection<Car>("cars");
                 var cruze = (from car in collection.AsQueryable()
@@ -34,8 +34,23 @@ namespace Trappings.Tests
         {
             var collection = TestUtils.GetCollection<Car>("cars");
             var originalNumberOfCars = collection.FindAll().Count();
-            using (FixtureManager.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
+            using (FixtureSession.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
             {
+                collection.FindAll().Count().ShouldEqual(originalNumberOfCars + 1);
+            }
+            collection.FindAll().Count().ShouldEqual(originalNumberOfCars);
+        }
+
+        [Fact]
+        public void Objects_added_explicitly_will_get_cleaned_up_at_the_end_with_the_rest()
+        {
+            var collection = TestUtils.GetCollection<Car>("cars");
+            var originalNumberOfCars = collection.FindAll().Count();
+            using (var session = FixtureSession.Create())
+            {
+                var fusion = new Car {Make = "Ford", Model = "Fusion"};
+                collection.Save(fusion);
+                session.Track(fusion, "cars");
                 collection.FindAll().Count().ShouldEqual(originalNumberOfCars + 1);
             }
             collection.FindAll().Count().ShouldEqual(originalNumberOfCars);
