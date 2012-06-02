@@ -44,6 +44,45 @@ namespace Trappings.Tests
             objects.Count.ShouldEqual(0);
         }
 
+        public class DescribeLocatingTheIdProperty
+        {
+            [Fact]
+            public void It_finds_the_id_named_Id()
+            {
+                var db = new MongoDatabaseProvider(new Configuration());
+                db.GetId(new {Id = 42}).ShouldEqual(42);
+            }
+
+            [Fact]
+            public void It_finds_the_id_named_id()
+            {
+                var db = new MongoDatabaseProvider(new Configuration());
+                db.GetId(new {id = 42}).ShouldEqual(42);
+            }
+
+            [Fact]
+            public void It_finds_the_id_named_ID()
+            {
+                var db = new MongoDatabaseProvider(new Configuration());
+                db.GetId(new {ID = 42}).ShouldEqual(42);
+            }
+
+            [Fact]
+            public void It_finds_the_id_named__id()
+            {
+                var db = new MongoDatabaseProvider(new Configuration());
+                db.GetId(new {_id = 42}).ShouldEqual(42);
+            }
+
+            [Fact]
+            public void It_throws_when_it_cant_find_a_suitable_ID()
+            {
+                var db = new MongoDatabaseProvider(new Configuration());
+                Assert.Throws<ArgumentException>(() =>
+                         db.GetId(new {ObjectId = 42}));
+            }
+        }
+
         public void Dispose()
         {
             TestUtils.GetCollection<Car>("cars").Drop();

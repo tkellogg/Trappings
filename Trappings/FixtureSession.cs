@@ -4,13 +4,11 @@ namespace Trappings
 {
     public sealed class FixtureSession : IDisposable
     {
-        private readonly IFixtureLoader fixtureLoader;
         private readonly IDatabaseProvider db;
         private static bool _hasRunInitializers;
 
         private FixtureSession(IFixtureLoader fixtureLoader, IDatabaseProvider db)
         {
-            this.fixtureLoader = fixtureLoader;
             this.db = db;
             var fixtures = fixtureLoader.GetFixtures();
             foreach(var fixture in fixtures)

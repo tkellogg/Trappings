@@ -61,11 +61,15 @@ namespace Trappings
             }
         }
 
-        private object GetId(object @object)
+        public object GetId(object @object)
         {
-            var property = @object.GetType().GetProperty("Id");
+            var type = @object.GetType();
+            var property = type.GetProperty("Id");
+            property = property ?? type.GetProperty("id");
+            property = property ?? type.GetProperty("ID");
+            property = property ?? type.GetProperty("_id");
             if (property == null)
-                return null;
+                throw new ArgumentException(string.Format("Couldn't find a suitable Id property for type {0}", type));
 
             return property.GetValue(@object, null);
         }
