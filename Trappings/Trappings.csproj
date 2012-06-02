@@ -58,14 +58,13 @@
     <Compile Include="IDatabaseProvider.cs" />
     <Compile Include="IFixtureLoader.cs" />
     <Compile Include="IFixtureFinder.cs" />
+    <Compile Include="IGlobalSetup.cs" />
     <Compile Include="MongoDatabaseProvider.cs" />
-    <Compile Include="Trappings.cs" />
+    <Compile Include="SetupClassScanner.cs" />
+    <Compile Include="FixtureManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="fixtures\cars.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

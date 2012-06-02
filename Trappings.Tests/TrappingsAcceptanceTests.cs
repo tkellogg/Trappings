@@ -10,7 +10,7 @@ namespace Trappings.Tests
         [Fact]
         public void A_context_is_a_Trappings_object_in_a_using_statement()
         {
-            using (Trappings.Create())
+            using (FixtureManager.Create())
             {
                 // The context
             }
@@ -19,7 +19,7 @@ namespace Trappings.Tests
         [Fact]
         public void Objects_are_accessible_within_the_context()
         {
-            using (Trappings.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
+            using (FixtureManager.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
             {
                 var collection = TestUtils.GetCollection<Car>("cars");
                 var cruze = (from car in collection.AsQueryable()
@@ -34,7 +34,7 @@ namespace Trappings.Tests
         {
             var collection = TestUtils.GetCollection<Car>("cars");
             var originalNumberOfCars = collection.FindAll().Count();
-            using (Trappings.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
+            using (FixtureManager.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
             {
                 collection.FindAll().Count().ShouldEqual(originalNumberOfCars + 1);
             }
