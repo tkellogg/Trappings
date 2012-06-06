@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Reflection;
 using Microsoft.CSharp.RuntimeBinder;
 using MongoDB.Bson;
@@ -76,20 +77,30 @@ namespace Trappings
             return property.GetValue(@object, null);
         }
 
-        private object GetIdFromDynamicObject(object @object)
+        private static object GetIdFromDynamicObject(object @object)
         {
-            if (!(@object is IDictionary<string, object>))
+            if (!(@object is DynamicObject || @object is ExpandoObject))
                 throw new ArgumentException(string.Format("Couldn't find Id property for {0}", @object.GetType()));
 
-            var hash = (IDictionary<string, object>) @object;
-            if (hash.ContainsKey("Id"))
-                return hash["Id"];
-            if (hash.ContainsKey("id"))
-                return hash["id"];
-            if (hash.ContainsKey("_id"))
-                return hash["_id"];
+            var id = TryGetMember(@object, o => o.Id);
+            id = id ?? TryGetMember(@object, o => o.id);
+            id = id ?? TryGetMember(@object, o => o._id);
 
-            throw new ArgumentException(string.Format("Couldn't find Id property for {0}", @object.GetType()));
+            if (id == null)
+                throw new ArgumentException(string.Format("Couldn't find Id property for {0}", @object.GetType()));
+            return id;
+        }
+
+        private static object TryGetMember(dynamic @object, Func<dynamic, object> getter)
+        {
+            try
+            {
+                return getter(@object);
+            }
+            catch (RuntimeBinderException)
+            {
+                return null;
+            }
         }
     }
 }
