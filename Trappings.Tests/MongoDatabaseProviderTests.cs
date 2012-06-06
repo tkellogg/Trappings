@@ -91,6 +91,14 @@ namespace Trappings.Tests
                 obj.id = 42;
                 ((object)db.GetId(obj)).ShouldEqual(42);
             }
+            
+            [Fact]
+            public void It_converts_strings_to_BsonObjectIds()
+            {
+                var db = new MongoDatabaseProvider(new Configuration());
+                var id = BsonObjectId.GenerateNewId();
+                db.GetId(new {Id = id.ToString()}).ShouldEqual(id);
+            }
         }
 
         public void Dispose()

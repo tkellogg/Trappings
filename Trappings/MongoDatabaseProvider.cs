@@ -71,10 +71,17 @@ namespace Trappings
             property = property ?? type.GetProperty("ID");
             property = property ?? type.GetProperty("_id");
             if (property == null)
-                return GetIdFromDynamicObject(@object);
+                return ConvertToValidIdType(GetIdFromDynamicObject(@object));
 
 
-            return property.GetValue(@object, null);
+            return ConvertToValidIdType(property.GetValue(@object, null));
+        }
+
+        private object ConvertToValidIdType(object idValue)
+        {
+            if (idValue is string)
+                return BsonObjectId.Parse((string)idValue);
+            return idValue;
         }
 
         private static object GetIdFromDynamicObject(object @object)
