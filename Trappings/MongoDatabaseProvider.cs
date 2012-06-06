@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.CSharp.RuntimeBinder;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -69,9 +70,26 @@ namespace Trappings
             property = property ?? type.GetProperty("ID");
             property = property ?? type.GetProperty("_id");
             if (property == null)
-                throw new ArgumentException(string.Format("Couldn't find a suitable Id property for type {0}", type));
+                return GetIdFromDynamicObject(@object);
+
 
             return property.GetValue(@object, null);
+        }
+
+        private object GetIdFromDynamicObject(object @object)
+        {
+            if (!(@object is IDictionary<string, object>))
+                throw new ArgumentException(string.Format("Couldn't find Id property for {0}", @object.GetType()));
+
+            var hash = (IDictionary<string, object>) @object;
+            if (hash.ContainsKey("Id"))
+                return hash["Id"];
+            if (hash.ContainsKey("id"))
+                return hash["id"];
+            if (hash.ContainsKey("_id"))
+                return hash["_id"];
+
+            throw new ArgumentException(string.Format("Couldn't find Id property for {0}", @object.GetType()));
         }
     }
 }

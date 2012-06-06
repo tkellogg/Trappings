@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver.Linq;
@@ -80,6 +81,15 @@ namespace Trappings.Tests
                 var db = new MongoDatabaseProvider(new Configuration());
                 Assert.Throws<ArgumentException>(() =>
                          db.GetId(new {ObjectId = 42}));
+            }
+
+            [Fact]
+            public void It_can_find_the_id_when_object_is_an_ExpandoObject()
+            {
+                var db = new MongoDatabaseProvider(new Configuration());
+                dynamic obj = new ExpandoObject();
+                obj.id = 42;
+                ((object)db.GetId(obj)).ShouldEqual(42);
             }
         }
 
