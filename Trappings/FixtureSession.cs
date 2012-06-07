@@ -15,6 +15,12 @@ namespace Trappings
                 db.LoadFixtures(fixture);
         }
 
+        public static string ConnectionString
+        {
+            get { return Configuration.ConnectionString; }
+            set { Configuration.ConnectionString = value; }
+        }
+
         public void Dispose()
         {
             db.Clear();
