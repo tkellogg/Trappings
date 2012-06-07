@@ -1,6 +1,7 @@
 *.suo
 *.swp
 *.user
+*.orig
 bin/
 obj/
 packages/
