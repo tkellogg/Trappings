@@ -59,10 +59,12 @@
     <Compile Include="IFixtureLoader.cs" />
     <Compile Include="IFixtureFinder.cs" />
     <Compile Include="IGlobalSetup.cs" />
+    <Compile Include="ITestFixtureData.cs" />
     <Compile Include="MongoDatabaseProvider.cs" />
     <Compile Include="SetupClassScanner.cs" />
     <Compile Include="FixtureSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetupObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
