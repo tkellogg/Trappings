@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using Should;
@@ -33,6 +32,22 @@ namespace Trappings.Tests
         class WithEnumerable
         {
             private static Car[] cars = new[] {new Car {Make = "Chevy", Model = "Cruze"}};
+        }
+
+        class ImplementingTestFixtureData : ITestFixtureData
+        {
+            // not picked up
+            public static Car[] cars = new[] {new Car {Make = "Volkswagon", Model = "Jetta"}};
+            public static int InstanceCount;
+
+            public ImplementingTestFixtureData() { InstanceCount++;}
+
+            public IEnumerable<SetupObject> Setup()
+            {
+                var car = new Car {Make = "Chevy", Model = "Cruze"};
+                yield return new SetupObject("cars", car);;
+                yield return new SetupObject("drivers", new Driver{Name = "Tim Kellogg", CarId = car.Id});
+            }
         }
         #endregion
 
@@ -86,6 +101,45 @@ namespace Trappings.Tests
             Car car = containers[0].Fixtures.First().Value;
             car.Make.ShouldEqual("Chevy");
             car.Model.ShouldEqual("Cruze");
+        }
+        
+        public class DescribeUsingTestFixtureData
+        {
+            private readonly ClrFixtureLoader loader;
+            private readonly int oldInstanceCount;
+
+            public DescribeUsingTestFixtureData()
+            {
+                oldInstanceCount = ImplementingTestFixtureData.InstanceCount;
+                var resolver = Mock.Of<IFixtureFinder>(x => 
+                        x.GetTypes() == new[] {typeof (ImplementingTestFixtureData)});
+
+                loader = new ClrFixtureLoader(resolver);
+            }
+
+            [Fact]
+            public void The_type_is_instantiated_and_used()
+            {
+                foreach(var fixture in loader.GetFixtures()) ;
+                ImplementingTestFixtureData.InstanceCount.ShouldEqual(oldInstanceCount + 1);
+            }
+        
+            [Fact]
+            public void All_fixtures_found_are_returned()
+            {
+                var fixtures = loader.GetFixtures().ToArray();
+                fixtures.Length.ShouldEqual(2);
+                fixtures[0].Name.ShouldEqual("cars");
+                fixtures[1].Name.ShouldEqual("drivers");
+            }
+
+            [Fact]
+            public void Static_fields_arent_used()
+            {
+                var fixtures = loader.GetFixtures().ToArray();
+                fixtures.Any(x => x.Name == "cars" &&
+                     x.Fixtures.Any(y => y.Value.Model == "Jetta")).ShouldBeFalse();
+            }
         }
     }
 }

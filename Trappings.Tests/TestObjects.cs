@@ -10,6 +10,13 @@ namespace Trappings.Tests
         public string Model { get; set; }
     }
 
+    public class Driver
+    {
+        public ObjectId Id { get; set; }
+        public string Name { get; set; }
+        public ObjectId CarId { get; set; }
+    }
+
     class AcceptanceFixtures
     {
         static Dictionary<string, Car> cars = new Dictionary<string, Car>
