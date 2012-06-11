@@ -7,9 +7,11 @@ namespace Trappings
             get { return @"fixtures"; }
         }
 
-        public string ConnectionString
+        string IConfiguration.ConnectionString
         {
-            get { return "mongodb://localhost/test"; }
+            get { return ConnectionString; }
         }
+
+        public static string ConnectionString { get; set; }
     }
 }

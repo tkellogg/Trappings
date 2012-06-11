@@ -55,6 +55,11 @@ namespace Trappings
             _hasRunInitializers = true;
         }
 
+        public static string ConnectionString
+        {
+            get { return Configuration.ConnectionString; }
+        }
+
         /// <summary>
         /// Creates a session with the given fixtures loaded into the database
         /// </summary>

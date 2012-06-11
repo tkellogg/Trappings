@@ -61,3 +61,16 @@ public void ILoveCars()
 
 You can use this for inter-process tests -- like functional or regression
 tests that hit a website or web service. 
+
+Building
+--------
+
+ * Install [Visual Studio Visualization and Modeling SDK](http://archive.msdn.microsoft.com/vsvmsdk). This is required for the T4 templates. The project won't build without it.
+ * Open `Trappings.sln` in Visual Studio 2010.
+ * Build!
+
+To build the NuGet package, you have to use the rakefile:
+ * Install Ruby
+ * run `gem install rake albacore`
+ * `cd` into the root of your checkout root
+ * run `rake package`
