@@ -11,7 +11,10 @@ The cleanest way to setup a fixture is to create a class that implements
 ```csharp
 class TheRaceTrack : ITestFixtureData
 {
-  public static Car Cruze;
+  // A convenient pattern to follow is to make static properties for things
+  // you'll access within the test. All of these are completely valid within
+  // the using block.
+  public static Car Cruze { get; set; }
 
   public IEnumerable<SetupObject> Setup() 
   {
@@ -31,7 +34,7 @@ class TheRaceTrack : ITestFixtureData
 Each item that is yielded into the Enumerable is immediately inserted into the 
 database. This is useful (as above) for setting up relationships between 
 collections. It's also sometimes useful to hold a reference to objects created
-in a statick property or field - so you can access them during tests for verifying
+in a static property or field - so you can access them during tests for verifying
 behavior.
 
 Using fixtures from a test
@@ -41,7 +44,7 @@ Using fixtures from a test
 [Test]
 public void ILoveCars()
 {
-  using(FixtureSession.UseFixture<TheRaceTrack>())
+  using(FixtureSession.Create<TheRaceTrack>())
   {
     // Database is now setup. You can use code that assumes that documents
     // exist in db.cars and db.drivers
