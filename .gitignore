@@ -7,3 +7,4 @@ obj/
 packages/
 _ReSharper.*/
 build/
+*.[Gg]enerated.cs

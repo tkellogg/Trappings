@@ -2,21 +2,14 @@ namespace Trappings
 {
     internal class Configuration : IConfiguration
     {
-        public Configuration()
-        {
-            ConnectionString = ConnectionString ?? "mongodb://localhost/test";
-        }
-
         public string Directory
         {
             get { return @"fixtures"; }
         }
 
-        string IConfiguration.ConnectionString
+        public string ConnectionString
         {
-            get { return ConnectionString; }
+            get { return "mongodb://localhost/test"; }
         }
-
-        public static string ConnectionString { get; set; }
     }
 }

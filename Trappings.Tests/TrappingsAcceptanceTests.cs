@@ -96,20 +96,5 @@ namespace Trappings.Tests
                 cars.Any().ShouldBeTrue();
             }
         }
-
-        [Fact]
-        public void Trappings_can_have_connectionString_configured()
-        {
-            try
-            {
-                const string connectionString = "mongodb://example.com/prod";
-                FixtureSession.ConnectionString = connectionString;
-                FixtureSession.ConnectionString.ShouldEqual(connectionString);
-            }
-            finally
-            {
-                FixtureSession.ConnectionString = "mongodb://localhost/test";
-            }
-        }
     }
 }

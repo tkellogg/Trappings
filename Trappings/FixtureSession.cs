@@ -2,7 +2,7 @@
 
 namespace Trappings
 {
-    public sealed class FixtureSession : IDisposable
+    public sealed partial class FixtureSession : IDisposable
     {
         private readonly IDatabaseProvider db;
         private static bool _hasRunInitializers;
@@ -13,12 +13,6 @@ namespace Trappings
             var fixtures = fixtureLoader.GetFixtures();
             foreach(var fixture in fixtures)
                 db.LoadFixtures(fixture);
-        }
-
-        public static string ConnectionString
-        {
-            get { return Configuration.ConnectionString; }
-            set { Configuration.ConnectionString = value; }
         }
 
         public void Dispose()
@@ -53,29 +47,12 @@ namespace Trappings
             _hasRunInitializers = true;
         }
 
-        public static FixtureSession Create()
+        /// <summary>
+        /// Creates a session with the given fixtures loaded into the database
+        /// </summary>
+        public static FixtureSession Create(params Type[] types)
         {
-            return Create(conf => { });
-        }
-
-        public static FixtureSession UseFixture<T>()
-        {
-            return Create(conf => conf.Add(typeof (T)));
-        }
-
-        public static FixtureSession UseFixtures<T1, T2>()
-        {
-            return Create(conf => conf.Add(typeof (T1), typeof (T2)));
-        }
-
-        public static FixtureSession UseFixtures<T1, T2, T3>()
-        {
-            return Create(conf => conf.Add(typeof (T1), typeof (T2), typeof (T3)));
-        }
-
-        public static FixtureSession UseFixtures<T1, T2, T3, T4>()
-        {
-            return Create(conf => conf.Add(typeof (T1), typeof (T2), typeof (T3), typeof (T4)));
+            return Create(conf => conf.Add(types));
         }
     }
 }
