@@ -6,6 +6,7 @@ namespace Trappings
     {
         private readonly IDatabaseProvider db;
         private static bool _hasRunInitializers;
+        private static int instanceCount;
 
         private FixtureSession(IFixtureLoader fixtureLoader, IDatabaseProvider db)
         {
@@ -13,10 +14,13 @@ namespace Trappings
             var fixtures = fixtureLoader.GetFixtures();
             foreach(var fixture in fixtures)
                 db.LoadFixtures(fixture);
+
+            instanceCount++;
         }
 
         public void Dispose()
         {
+            instanceCount--;
             db.Clear();
         }
 
@@ -58,5 +62,7 @@ namespace Trappings
         {
             return Create(conf => conf.Add(types));
         }
+
+        public static bool HasActiveSessions { get { return instanceCount > 0; } }
     }
 }
