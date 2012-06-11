@@ -21,7 +21,7 @@ namespace Trappings.Tests
         [Fact]
         public void Objects_are_accessible_within_the_context()
         {
-            using (FixtureSession.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
+            using (FixtureSession.Create(typeof(AcceptanceFixtures)))
             {
                 var collection = TestUtils.GetCollection<Car>("cars");
                 var cruze = (from car in collection.AsQueryable()
@@ -36,7 +36,7 @@ namespace Trappings.Tests
         {
             var collection = TestUtils.GetCollection<Car>("cars");
             var originalNumberOfCars = collection.FindAll().Count();
-            using (FixtureSession.Create(conf => conf.Add(typeof(AcceptanceFixtures))))
+            using (FixtureSession.Create(typeof(AcceptanceFixtures)))
             {
                 collection.FindAll().Count().ShouldEqual(originalNumberOfCars + 1);
             }
@@ -71,7 +71,7 @@ namespace Trappings.Tests
         [Fact]
         public void ITestFixtureData_can_be_used_for_complex_setups()
         {
-            using (FixtureSession.UseFixture<TestFixtureData>())
+            using (FixtureSession.Create<TestFixtureData>())
             {
                 var collection = TestUtils.GetCollection<Car>("cars").AsQueryable();
                 var cars = collection.Where(x => x.Make == "Chevy" && x.Model == "Cruze").ToArray();
@@ -82,7 +82,7 @@ namespace Trappings.Tests
         [Fact]
         public void ITestFixtureData_can_be_used_to_form_relationships_via_IDs()
         {
-            using (FixtureSession.UseFixture<TestFixtureData>())
+            using (FixtureSession.Create<TestFixtureData>())
             {
                 var driverCollection = TestUtils.GetCollection<Driver>("drivers").AsQueryable();
                 var drivers = (driverCollection.Where(x => x.Name == "Tim Kellogg")).ToArray();

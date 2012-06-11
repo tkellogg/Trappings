@@ -28,7 +28,11 @@ namespace Trappings
             db.AddItemForCleanup(collectionName, @object);
         }
 
-        public static FixtureSession Create(Action<IFixtureFinder> configure)
+        /// <remarks>
+        /// I downgraded this to internal because it seems like uneccessary API surface area. Lets
+        /// keep it small for as long as we can
+        /// </remarks>
+        internal static FixtureSession Create(Action<IFixtureFinder> configure)
         {
             RunInitializersIfNeeded();
             var fixtureFinder = new FixtureFinder();
