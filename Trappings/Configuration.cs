@@ -9,7 +9,7 @@ namespace Trappings
 
         string IConfiguration.ConnectionString
         {
-            get { return ConnectionString; }
+            get { return ConnectionString ?? (ConnectionString = "mongodb://localhost/test"); }
         }
 
         public static string ConnectionString { get; set; }
