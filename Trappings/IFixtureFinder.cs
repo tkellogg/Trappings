@@ -7,5 +7,7 @@ namespace Trappings
     {
         IEnumerable<Type> GetTypes();
         IFixtureFinder Add(params Type[] types);
+        IEnumerable<ITestFixtureData> GetFixtures();
+        IFixtureFinder Add(ITestFixtureData fixture);
     }
 }

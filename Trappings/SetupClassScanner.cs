@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Trappings
 {
@@ -8,7 +10,7 @@ namespace Trappings
         public void ScanForSetupTypes()
         {
             var types = from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                        from type in assembly.GetTypes()
+                        from type in GetTypes(assembly)
                         where type.IsClass && !type.IsAbstract && typeof (IGlobalSetup).IsAssignableFrom(type)
                         select type;
 
@@ -24,6 +26,18 @@ namespace Trappings
                     Console.WriteLine(e.Message);
                     Console.WriteLine(e.ToString());
                 }
+            }
+        }
+
+        private static IEnumerable<Type> GetTypes(Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (TypeLoadException)
+            {
+                return new Type[0];
             }
         }
     }

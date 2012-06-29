@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver.Linq;
@@ -58,7 +59,7 @@ namespace Trappings.Tests
             collection.FindAll().Count().ShouldEqual(originalNumberOfCars);
         }
 
-        private class TestFixtureData : ITestFixtureData
+        private class CarsAndDrivers : ITestFixtureData
         {
             public IEnumerable<SetupObject> Setup()
             {
@@ -71,7 +72,7 @@ namespace Trappings.Tests
         [Fact]
         public void ITestFixtureData_can_be_used_for_complex_setups()
         {
-            using (FixtureSession.Create<TestFixtureData>())
+            using (FixtureSession.Create<CarsAndDrivers>())
             {
                 var collection = TestUtils.GetCollection<Car>("cars").AsQueryable();
                 var cars = collection.Where(x => x.Make == "Chevy" && x.Model == "Cruze").ToArray();
@@ -82,7 +83,7 @@ namespace Trappings.Tests
         [Fact]
         public void ITestFixtureData_can_be_used_to_form_relationships_via_IDs()
         {
-            using (FixtureSession.Create<TestFixtureData>())
+            using (FixtureSession.Create<CarsAndDrivers>())
             {
                 var driverCollection = TestUtils.GetCollection<Driver>("drivers").AsQueryable();
                 var drivers = (driverCollection.Where(x => x.Name == "Tim Kellogg")).ToArray();
@@ -94,6 +95,20 @@ namespace Trappings.Tests
                 var carCollection = TestUtils.GetCollection<Car>("cars").AsQueryable();
                 var cars = (carCollection.Where(x => x.Id == driver.CarId)).ToArray();
                 cars.Any().ShouldBeTrue();
+            }
+        }
+
+        [Fact]
+        public void You_can_use_a_delegate_to_add_fixtures()
+        {
+            Func<IEnumerable<SetupObject>> creator = () =>
+                new[] { new SetupObject { CollectionName = "drivers", Value = new Driver{Name="Dale"}}  };
+            using (FixtureSession.Create(creator))
+            {
+                var collection = TestUtils.GetCollection<Driver>("drivers").AsQueryable();
+                var driver = collection.FirstOrDefault();
+                driver.ShouldNotBeNull();
+                driver.Name.ShouldEqual("Dale");
             }
         }
     }

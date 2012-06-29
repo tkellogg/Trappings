@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Trappings
 {
@@ -60,6 +61,12 @@ namespace Trappings
             get { return Configuration.ConnectionString; }
         }
 
+        public static FixtureSession Create(Func<IEnumerable<SetupObject>> creator)
+        {
+            var objects = creator();
+            return Create(conf => conf.Add(new TestFixtureData(objects)));
+        }
+
         /// <summary>
         /// Creates a session with the given fixtures loaded into the database
         /// </summary>
@@ -67,6 +74,28 @@ namespace Trappings
         {
             return Create(conf => conf.Add(types));
         }
+
+        #region Deprecated APIs
+
+        [Obsolete("Use Create<T1>() instead")]
+        public static FixtureSession UseFixture<T>()
+        {
+            return Create<T>();
+        }
+
+        [Obsolete("Use Create<T1, T2>() instead")]
+        public static FixtureSession UseFixtures<T1, T2>()
+        {
+            return Create<T1, T2>();
+        }
+
+        [Obsolete("Use Create<T1, T2, T3>() instead")]
+        public static FixtureSession UseFixtures<T1, T2, T3>()
+        {
+            return Create<T1, T2, T3>();
+        }
+
+        #endregion
 
         public static bool HasActiveSessions { get { return instanceCount > 0; } }
     }

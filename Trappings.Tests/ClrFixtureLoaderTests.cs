@@ -107,11 +107,12 @@ namespace Trappings.Tests
         {
             private readonly ClrFixtureLoader loader;
             private readonly int oldInstanceCount;
+            private readonly IFixtureFinder resolver;
 
             public DescribeUsingTestFixtureData()
             {
                 oldInstanceCount = ImplementingTestFixtureData.InstanceCount;
-                var resolver = Mock.Of<IFixtureFinder>(x => 
+                resolver = Mock.Of<IFixtureFinder>(x => 
                         x.GetTypes() == new[] {typeof (ImplementingTestFixtureData)});
 
                 loader = new ClrFixtureLoader(resolver);
@@ -139,6 +140,18 @@ namespace Trappings.Tests
                 var fixtures = loader.GetFixtures().ToArray();
                 fixtures.Any(x => x.Name == "cars" &&
                      x.Fixtures.Any(y => y.Value.Model == "Jetta")).ShouldBeFalse();
+            }
+
+            [Fact]
+            public void It_uses_prebuilt_instances_after_Types()
+            {
+                var instance = Mock.Of<ITestFixtureData>(x => x.Setup() == 
+                    new[]{ Mock.Of<SetupObject>(so => so.CollectionName == "instance") });
+                Mock.Get(resolver).Setup(x => x.GetFixtures()).Returns(new[] {instance});
+
+                var fixtures = loader.GetFixtures().ToArray();
+                fixtures.Length.ShouldEqual(3);
+                fixtures[2].Name.ShouldEqual("instance");
             }
         }
     }

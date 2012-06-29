@@ -46,6 +46,25 @@ namespace Trappings
                     }
                 }
             }
+
+            foreach (var fixtureData in fixtureFinder.GetFixtures())
+            {
+                foreach (var setupObject in fixtureData.Setup())
+                {
+                    yield return new FixtureContainer
+                                     {
+                                         Fixtures = new[]
+                                                        {
+                                                            new Fixture
+                                                                {
+                                                                    Name = setupObject.CollectionName,
+                                                                    Value = setupObject.Value
+                                                                }
+                                                        },
+                                         Name = setupObject.CollectionName
+                                     };
+                }
+            }
         }
 
         private IEnumerable<FixtureContainer> GetFixtureContainersFromInstance(Type type)

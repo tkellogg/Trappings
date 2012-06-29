@@ -70,6 +70,7 @@
     <Compile Include="FixtureSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetupObject.cs" />
+    <Compile Include="TestFixtureData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FixtureSession.Generated.tt">
