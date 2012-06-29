@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MongoDB.Bson;
 
 namespace Trappings
 {
@@ -97,5 +98,16 @@ namespace Trappings
         #endregion
 
         public static bool HasActiveSessions { get { return instanceCount > 0; } }
+
+        /// <summary>
+        /// Gets an object directly out of the database
+        /// </summary>
+        /// <typeparam name="TModel">the Type of the collection</typeparam>
+        /// <param name="collectionName">The name of the collection</param>
+        /// <param name="id">The ID value. The document in the collection MUST have an _id field</param>
+        public TModel GetFromDb<TModel>(string collectionName, object id)
+        {
+            return db.GetById<TModel>(collectionName, id);
+        }
     }
 }

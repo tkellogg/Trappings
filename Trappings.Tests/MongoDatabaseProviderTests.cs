@@ -2,6 +2,7 @@
 using System.Dynamic;
 using System.Linq;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Should;
 using Xunit;
@@ -98,6 +99,30 @@ namespace Trappings.Tests
                 var db = new MongoDatabaseProvider(new Configuration());
                 var id = BsonObjectId.GenerateNewId();
                 db.GetId(new {Id = id.ToString()}).ShouldEqual(id);
+            }
+        }
+
+        public class DescribeGettingById : IDisposable
+        {
+            [Fact]
+            public void It_can_find_a_normal_document_by_id()
+            {
+                var collection = TestUtils.GetCollection<Car>("cars");
+
+                var car = new Car {Make = "Suburu", Model = "Impreza"};
+                collection.Save(car);
+
+                var db = new MongoDatabaseProvider(new Configuration());
+                var fromDb = db.GetById<Car>("cars", car.Id);
+
+                fromDb.ShouldNotBeNull();
+                fromDb.Make.ShouldEqual("Suburu");
+                fromDb.Model.ShouldEqual("Impreza");
+            }
+
+            public void Dispose()
+            {
+                TestUtils.GetCollection<Car>("cars").Drop();
             }
         }
 

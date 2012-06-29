@@ -11,13 +11,11 @@ namespace Trappings
 {
     internal class MongoDatabaseProvider : IDatabaseProvider
     {
-        private readonly IConfiguration configuration;
         private readonly MongoDatabase db;
         private readonly Dictionary<string, List<IMongoQuery>> savedObjectIds;
 
         public MongoDatabaseProvider(IConfiguration configuration)
         {
-            this.configuration = configuration;
             db = MongoDatabase.Create(configuration.ConnectionString);
             savedObjectIds = new Dictionary<string, List<IMongoQuery>>();
         }
@@ -37,6 +35,17 @@ namespace Trappings
             var id = GetId(item);
             var query = Query.EQ("_id", BsonValue.Create(id));
             AddCleanupQuery(collectionName, query);
+        }
+
+        public T GetById<T>(string collectionName, object id)
+        {
+            var collection = db.GetCollection<T>(collectionName);
+
+            var validIdType = ConvertToValidIdType(id) as BsonValue;
+            if (validIdType == null)
+                throw new ArgumentException("Expected id to be a BsonValue. If id is a string, it will be attempted to be converted to a BsonObjectId");
+
+            return collection.FindOne(Query.EQ("_id", validIdType));
         }
 
         private MongoCollection<Dictionary<string, object>> GetCollection(string name)
@@ -81,6 +90,8 @@ namespace Trappings
         {
             if (idValue is string)
                 return BsonObjectId.Parse((string)idValue);
+            if (idValue is ObjectId)
+                return BsonObjectId.Create((ObjectId) idValue);
             return idValue;
         }
 

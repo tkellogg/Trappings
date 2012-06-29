@@ -61,11 +61,13 @@ namespace Trappings.Tests
 
         private class CarsAndDrivers : ITestFixtureData
         {
+            public static Car Car;
+
             public IEnumerable<SetupObject> Setup()
             {
-                var car = new Car {Make = "Chevy", Model = "Cruze"};
-                yield return new SetupObject("cars", car);
-                yield return new SetupObject("drivers", new Driver{CarId = car.Id, Name = "Tim Kellogg"});
+                Car = new Car {Make = "Chevy", Model = "Cruze"};
+                yield return new SetupObject("cars", Car);
+                yield return new SetupObject("drivers", new Driver{CarId = Car.Id, Name = "Tim Kellogg"});
             }
         }
 
@@ -108,6 +110,20 @@ namespace Trappings.Tests
                 var driver = collection.FirstOrDefault();
                 driver.ShouldNotBeNull();
                 driver.Name.ShouldEqual("Dale");
+            }
+        }
+
+        [Fact]
+        public void You_can_use_the_session_to_get_objects_out_of_the_db()
+        {
+            using (var session = FixtureSession.Create<CarsAndDrivers>())
+            {
+                var expected = CarsAndDrivers.Car;
+                var fromDb = session.GetFromDb<Car>("cars", expected.Id);
+
+                fromDb.Make.ShouldEqual(expected.Make);
+                fromDb.Model.ShouldEqual(expected.Model);
+                fromDb.Id.ShouldEqual(expected.Id);
             }
         }
     }
