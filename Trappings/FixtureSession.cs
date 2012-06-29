@@ -60,6 +60,7 @@ namespace Trappings
         public static string ConnectionString
         {
             get { return Configuration.ConnectionString; }
+            set { Configuration.ConnectionString = value; }
         }
 
         public static FixtureSession Create(params SetupObject[] objects)

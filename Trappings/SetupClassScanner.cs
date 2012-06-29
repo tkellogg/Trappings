@@ -35,7 +35,7 @@ namespace Trappings
             {
                 return assembly.GetTypes();
             }
-            catch (TypeLoadException)
+            catch (Exception)
             {
                 return new Type[0];
             }

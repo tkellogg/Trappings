@@ -1,5 +1,7 @@
 require 'albacore'
 
+task :default => :package
+
 msbuild :build do |msb|
   msb.properties :configuration => :Release
   msb.targets :Clean, :Build
