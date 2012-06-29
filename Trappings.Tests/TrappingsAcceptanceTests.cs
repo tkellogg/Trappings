@@ -22,7 +22,7 @@ namespace Trappings.Tests
         [Fact]
         public void Objects_are_accessible_within_the_context()
         {
-            using (FixtureSession.Create(typeof(AcceptanceFixtures)))
+            using (FixtureSession.Create(new[]{ typeof(AcceptanceFixtures) }))
             {
                 var collection = TestUtils.GetCollection<Car>("cars");
                 var cruze = (from car in collection.AsQueryable()
@@ -37,7 +37,7 @@ namespace Trappings.Tests
         {
             var collection = TestUtils.GetCollection<Car>("cars");
             var originalNumberOfCars = collection.FindAll().Count();
-            using (FixtureSession.Create(typeof(AcceptanceFixtures)))
+            using (FixtureSession.Create(new[]{ typeof(AcceptanceFixtures) }))
             {
                 collection.FindAll().Count().ShouldEqual(originalNumberOfCars + 1);
             }
@@ -101,9 +101,8 @@ namespace Trappings.Tests
         [Fact]
         public void You_can_use_a_delegate_to_add_fixtures()
         {
-            Func<IEnumerable<SetupObject>> creator = () =>
-                new[] { new SetupObject { CollectionName = "drivers", Value = new Driver{Name="Dale"}}  };
-            using (FixtureSession.Create(creator))
+            var objects = new[] { new SetupObject { CollectionName = "drivers", Value = new Driver{Name="Dale"}}  };
+            using (FixtureSession.Create(objects))
             {
                 var collection = TestUtils.GetCollection<Driver>("drivers").AsQueryable();
                 var driver = collection.FirstOrDefault();

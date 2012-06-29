@@ -24,7 +24,7 @@ namespace Trappings
         /// </summary>
         public static FixtureSession Create<<#= nameString #>>()
         {
-            return Create(<#= typeofString #>);
+            return Create(new[] { <#= typeofString #> });
         }
         <# 
         } #>

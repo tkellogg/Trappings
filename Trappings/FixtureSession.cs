@@ -61,16 +61,15 @@ namespace Trappings
             get { return Configuration.ConnectionString; }
         }
 
-        public static FixtureSession Create(Func<IEnumerable<SetupObject>> creator)
+        public static FixtureSession Create(params SetupObject[] objects)
         {
-            var objects = creator();
             return Create(conf => conf.Add(new TestFixtureData(objects)));
         }
 
         /// <summary>
         /// Creates a session with the given fixtures loaded into the database
         /// </summary>
-        public static FixtureSession Create(params Type[] types)
+        public static FixtureSession Create(Type[] types)
         {
             return Create(conf => conf.Add(types));
         }
