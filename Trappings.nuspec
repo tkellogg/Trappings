@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Trappings</id>
-    <version>0.3.4</version>
+    <version>0.3.5</version>
     <authors>Tim Kellogg</authors>
     <owners>Tim Kellogg</owners>
     <licenseUrl>https://github.com/tkellogg/Trappings/blob/master/License.md</licenseUrl>
@@ -14,7 +14,7 @@
     <copyright>Copyright Tim Kellogg 2012</copyright>
     <tags>mongodb mongo test testing TDD integration-test</tags>
     <dependencies>
-      <dependency id="mongocsharpdriver" version="1.4" />
+      <dependency id="mongocsharpdriver" version="[1.5.0]" />
     </dependencies>
   </metadata>
 </package>
