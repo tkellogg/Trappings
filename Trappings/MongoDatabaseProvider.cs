@@ -89,7 +89,13 @@ namespace Trappings
         private object ConvertToValidIdType(object idValue)
         {
             if (idValue is string)
-                return BsonObjectId.Parse((string)idValue);
+            {
+                BsonObjectId returnValue;
+                if (BsonObjectId.TryParse((string)idValue, out returnValue))
+                    return returnValue;
+
+                return idValue;
+            }
             if (idValue is ObjectId)
                 return BsonObjectId.Create((ObjectId) idValue);
             return idValue;

@@ -100,6 +100,14 @@ namespace Trappings.Tests
                 var id = BsonObjectId.GenerateNewId();
                 db.GetId(new {Id = id.ToString()}).ShouldEqual(id);
             }
+
+            [Fact]
+            public void It_doesnt_convert_to_BsonObjectId_if_it_doesnt_parse()
+            {
+                var db = new MongoDatabaseProvider(new Configuration());
+                var id = Guid.NewGuid().ToString();
+                db.GetId(new {Id = id}).ShouldEqual(id);
+            }
         }
 
         public class DescribeGettingById : IDisposable
