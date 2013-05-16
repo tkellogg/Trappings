@@ -114,6 +114,20 @@ namespace Trappings.Tests
         }
 
         [Fact]
+        public void It_supports_FP_styles_for_adding_fixtures()
+        {
+            using (FixtureSession.Create(new[]{"foo", "bar", "baz"}
+                .Select(name => new Driver {Name = name})
+                .Select(driver => new SetupObject("drivers", driver))))
+            {
+                var collection = TestUtils.GetCollection<Driver>("drivers").AsQueryable();
+                collection.Count().ShouldEqual(3);
+                collection.OrderBy(x => x.Id).Select(x => x.Name).ToArray()
+                    .ShouldEqual(new[]{"foo", "bar", "baz"}, "Should still be in the insert order");
+            }
+        }
+
+        [Fact]
         public void You_can_use_the_session_to_get_objects_out_of_the_db()
         {
             using (var session = FixtureSession.Create<CarsAndDrivers>())

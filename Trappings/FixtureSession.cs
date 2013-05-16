@@ -68,6 +68,11 @@ namespace Trappings
             return Create(conf => conf.Add(new TestFixtureData(objects)));
         }
 
+        public static FixtureSession Create(IEnumerable<SetupObject> objects)
+        {
+            return Create(conf => conf.Add(new TestFixtureData(objects)));
+        }
+
         /// <summary>
         /// Creates a session with the given fixtures loaded into the database
         /// </summary>
